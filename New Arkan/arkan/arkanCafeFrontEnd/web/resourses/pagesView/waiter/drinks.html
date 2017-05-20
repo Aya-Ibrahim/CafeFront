@@ -1,7 +1,178 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-drinks
+<div>
+    <h1> orders -- {{table}}</h1>
+    <header id="header">
+        <!--<h1><a href="index.html">Interphase</a></h1>-->
+        <nav id="nav">
+            <ul>
+                <li><button ng-click="showDrinksDiv()">مشروبات</button></li>
+                <li><button ng-click="showSheshaDiv()">ركن الشيشه</button></li>
+                <li><button ng-click="showGameDiv()">الالعاب</button></li>
+            </ul>
+        </nav>
+    </header> 
+    <div></div>
+</div>
+<div id="drinks" ng-if="showDrinks">
+    {{order}}
+    <table class="tab-content table table-bordered table-responsive table-striped">
+        <thead style="background-color: lightgray;"  >
+            <tr>
+                <td style="width: 30px;"></td>
+                <td>الاسم</td>
+                <td>عدد</td>
+                <td>سكر</td>
+            </tr>  
+        </thead>
+        <tbody>
+
+            <tr ng-repeat-start="orderLine in order.orderlines" style="background-color: #e4b9c0">
+
+                <td>
+                    <button ng-if="orderLine.expanded" ng-click="orderLine.expanded = false">-</button>
+                    <button ng-if="!orderLine.expanded" ng-click="orderLine.expanded = true">+</button>
+                </td>
+                <td ng-init="OuterIndex = $index"  >{{orderLine.item.itemName}}</td>
+                <td> <button ng-click="subItemFromOrderLine(OuterIndex)" class="button">-</button>{{orderLine.quantity}}<button ng-click="addItemToOrderLine(OuterIndex)" class="button">+</button></td>
+            </tr>
+            <tr ng-show="orderLine.expanded" ng-repeat="addition in orderLine.orderlineAdditions"  ng-repeat-end="">
+
+                <td colspan="3" > 
+        <center>{{$index + 1}}</center>
+        </td>
+        <td colspan="1">
+            <button ng-click="decreaseSuguerQuantity(OuterIndex, $index)"  class="button">-</button>{{addition.quantity}}<button ng-click="increaseSuguerQuantity(OuterIndex, $index)" class="button">+</button>
+        </td>   
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<div id="shesha" ng-if="showShesha">
+    {{sheshaOrder}}
+    <table class="tab-content table table-bordered table-responsive table-striped">
+        <thead style="background-color: lightgray;"  >
+            <tr>
+                <td>الاسم</td>
+                <td>عدد</td>
+            </tr>  
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="orderLine in sheshaOrder.orderlines" style="background-color: #e4b9c0">
+                <td ng-init="OuterIndex = $index"  >{{orderLine.item.itemName}}</td>
+                <td> <button ng-click="removeOneShesha(OuterIndex)" class="button">-</button>{{orderLine.quantity}}<button ng-click="addMoreShesha(OuterIndex)" class="button">+</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div id="shesha" ng-if="showGame">
+    {{gameOrder}}
+    <table class="tab-content table table-bordered table-responsive table-striped">
+        <thead style="background-color: lightgray;"  >
+            <tr>
+                <td>الاسم</td>
+                <td>السعر/المدة</td>
+                <td>المده</td>
+                <td>وقت البدأ</td>
+                <td>وقت الانتهاء</td>
+            </tr>  
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="gameLine in gameOrder.gameLines" style="background-color: #e4b9c0">
+                <td>{{gameLine.game.gameName}}</td>
+                <td>{{gameLine.game.basePrice}}/{{gameLine.game.baseUnit}}</td>
+                <td><input type="number" ng-model="gameLine.date" min="0" step=".25"/></td>
+                <td>
+                    <div class="dropdown form-group dropdown-start-parent">
+                        <label>Start Date</label>
+                        <a class="dropdown-toggle" id="dropdownStart" role="button" data-toggle="dropdown" data-target="for{{$index}}"
+                           >
+                            <div class="input-group date">
+                                <input type="text" class="form-control" data-ng-model="gameLine.startDate">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </a>
+                        <ul id="for{{$index}}" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="gameLine.startDate"
+                                            data-datetimepicker-config="{ dropdownSelector: '#dropdownStart', renderOn: 'end-date-changed' }"
+                                            data-on-set-time="startDateOnSetTime()"
+                                            data-before-render="startDateBeforeRender($dates,$index)"></datetimepicker>
+                        </ul>
+                    </div>
+                </td>
+                <td  >
+                    <div class="dropdown form-group dropdown-end-parent">
+                        <label>End Date</label>
+                        <a class="dropdown-toggle" id="dropdownEnd" role="button" data-toggle="dropdown" data-target="end{{$index}}"
+                           >
+                            <div class="input-group date">
+                                <input type="text" class="form-control" data-ng-model="gameLine.endDate">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </a>
+                        <ul id="end{{$index}}" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="gameLine.endDate"
+                                            data-datetimepicker-config="{ dropdownSelector: '#dropdownEnd', renderOn: 'start-date-changed' }"
+                                            data-on-set-time="endDateOnSetTime()"
+                                            data-before-render="endDateBeforeRender($view, $dates, $leftDate, $upDate, $rightDate, $index )"></datetimepicker>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<button class="btn" ng-click="showAllItems()" data-toggle="modal" data-target="#feedback_form">حفظ الاوردر</button>
+
+<div class="modal fade" id="feedback_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <center>
+                    <h4 class="modal-title" id="myModalLabel">الاوردر</h4>
+                    <h4 class="modal-title" id="myModalLabel">رقم الطاوله</h4>
+                </center>
+            </div>
+            <div class="modal-body">
+                <div class="row tab-content">
+                    <table class="tab-content table-bordered table-responsive table-striped col-md-12">
+                        <tr >
+                            <td>الاسم </td>
+                            <td>العدد/المده</td>
+                        </tr>
+                        <tr ng-repeat="orderDeatils in Drink_sheSha_Order.Drink_sheSha_OrderLines" ng-if="orderDeatils.quantity > 0" >
+                            <td >{{orderDeatils.item.itemName}}</td>
+                            <td >{{orderDeatils.quantity}}</td>
+                        </tr>
+                        <tr ng-repeat=" gameLine in Drink_sheSha_Order.gameLines"  >
+                            <td >{{gameLine.game.gameName}}</td>
+                            <td >{{gameLine.date}} ساعه</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+<!--            <div class="modal-body">
+                <div class="row tab-content">
+                    <table class="tab-content table-bordered table-responsive table-striped col-md-12">
+                        <tr >
+                            <td>الاسم </td>
+                            <td>المده</td>
+                        </tr>
+                        <tr ng-repeat=" gameLine in Drink_sheSha_Order.gameLines"  >
+                            <td >{{gameLine.game.gameName}}</td>
+                            <td >{{gameLine.date}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default hd-blue-btn" data-dismiss="modal">الغاء</button>
+                <button type="button" class="btn btn-default hd-blue-btn" data-dismiss="modal">تاكيد </button>
+
+            </div>
+        </div>
+    </div>
+</div>

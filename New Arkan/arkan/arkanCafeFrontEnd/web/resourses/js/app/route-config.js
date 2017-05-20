@@ -22,13 +22,13 @@ angular.module('arkanCafe').
                     url: '/order/drinks/:tableName/:tableId',
                     views: {
                         "viewA": {templateUrl: 'resourses/pagesView/waiter/order/order.html', controller: 'orderContoller'},
-                        "viewB": {templateUrl: " resourses/pagesView/waiter/drinks.html ", controller: 'orderContoller'}
+                        "viewB": {templateUrl: " resourses/pagesView/waiter/drinks.html ", controller: 'drinkController'}
                     }
                 }).state('order_table_shesha', {
                     url: '/order/shesha/:tableName/:tableId',
                     views: {
                         "viewA": {templateUrl: 'resourses/pagesView/waiter/order/order.html', controller: 'orderContoller'},
-                        "viewB": {templateUrl: " resourses/pagesView/waiter/shesha.html ", controller: 'orderContoller'}
+                        "viewB": {templateUrl: " resourses/pagesView/waiter/drinks.html ", controller: 'drinkController'}
                     }
                 }).state('order_table_games', {
                     url: '/order/games',

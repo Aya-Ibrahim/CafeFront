@@ -1,5 +1,6 @@
-angular.module('helpdeskApp').service('webService', function () {
- //   this.url='http://10.0.7.137:8080/';
-  this.url='http://localhost:8097/';
- //   this.url='http://172.16.30.7:8097/';
-});
+
+var app = angular.module('arkanCafe');
+//web service url in alll service we can inject webServiceUrl and get it's value
+//
+
+app.value('webServiceUrl', 'http://localhost:8080/arkan-1.0/webresources/');
