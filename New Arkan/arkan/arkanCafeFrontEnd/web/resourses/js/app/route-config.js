@@ -19,24 +19,25 @@ angular.module('arkanCafe').
 //                                "viewB": {template: " bbbbbbbbbbbbbbbbbbbb "}
                     }
                 }).state('order_table_drinks', {
-                    url: '/order/drinks/:tableName/:tableId',
+                    url: '/order/drinks/:tableId/:orderId',
                     views: {
                         "viewA": {templateUrl: 'resourses/pagesView/waiter/order/order.html', controller: 'orderContoller'},
                         "viewB": {templateUrl: " resourses/pagesView/waiter/drinks.html ", controller: 'drinkController'}
                     }
-                }).state('order_table_shesha', {
-                    url: '/order/shesha/:tableName/:tableId',
-                    views: {
-                        "viewA": {templateUrl: 'resourses/pagesView/waiter/order/order.html', controller: 'orderContoller'},
-                        "viewB": {templateUrl: " resourses/pagesView/waiter/drinks.html ", controller: 'drinkController'}
-                    }
-                }).state('order_table_games', {
-                    url: '/order/games',
-                    views: {
-                        "viewA": {templateUrl: 'resourses/pagesView/waiter/order/order.html', controller: 'orderContoller'},
-                        "viewB": {templateUrl: " resourses/pagesView/waiter/games.html ", controller: 'orderContoller'}
-                    }
-                });
+                })
+//                        .state('order_table_shesha', {
+//                    url: '/order/shesha/:tableId/:orderId',
+//                    views: {
+//                        "viewA": {templateUrl: 'resourses/pagesView/waiter/order/order.html', controller: 'orderContoller'},
+//                        "viewB": {templateUrl: " resourses/pagesView/waiter/drinks.html ", controller: 'drinkController'}
+//                    }
+//                }).state('order_table_games', {
+//                    url: '/order/games',
+//                    views: {
+//                        "viewA": {templateUrl: 'resourses/pagesView/waiter/order/order.html', controller: 'orderContoller'},
+//                        "viewB": {templateUrl: " resourses/pagesView/waiter/games.html ", controller: 'orderContoller'}
+//                    }
+//                });
                 $urlRouterProvider.otherwise('/home');
                 $locationProvider.html5Mode({enable: true, requiredBase: true});
 

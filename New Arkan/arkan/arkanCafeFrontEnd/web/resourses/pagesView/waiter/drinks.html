@@ -1,5 +1,5 @@
 <div>
-    <h1> orders -- {{table}}</h1>
+    <h1> orders -- {{tableId}}/{{orderId}}</h1>
     <header id="header">
         <!--<h1><a href="index.html">Interphase</a></h1>-->
         <nav id="nav">
@@ -20,7 +20,7 @@
                 <td style="width: 30px;"></td>
                 <td>الاسم</td>
                 <td>عدد</td>
-                <td>سكر</td>
+                <!--<td>سكر</td>-->
             </tr>  
         </thead>
         <tbody>
@@ -33,16 +33,23 @@
                 </td>
                 <td ng-init="OuterIndex = $index"  >{{orderLine.item.itemName}}</td>
                 <td> <button ng-click="subItemFromOrderLine(OuterIndex)" class="button">-</button>{{orderLine.quantity}}<button ng-click="addItemToOrderLine(OuterIndex)" class="button">+</button></td>
-            </tr>
-            <tr ng-show="orderLine.expanded" ng-repeat="addition in orderLine.orderlineAdditions"  ng-repeat-end="">
 
-                <td colspan="3" > 
-        <center>{{$index + 1}}</center>
-        </td>
-        <td colspan="1">
-            <button ng-click="decreaseSuguerQuantity(OuterIndex, $index)"  class="button">-</button>{{addition.quantity}}<button ng-click="increaseSuguerQuantity(OuterIndex, $index)" class="button">+</button>
-        </td>   
-        </tr>
+            </tr>
+            <tr  ng-show="orderLine.expanded"  >
+                <td  colspan="3" ></td>
+                <td ng-repeat="itemAdditions in orderLine.item.itemHasAdditions" >{{itemAdditions.addition.addName}}</td>
+                <!--<td></td>-->
+            </tr>
+            <tr ng-show="orderLine.expanded" ng-repeat="additionToOrder in orderLine.orderlineAdditions" ng-repeat-end="" >
+                <td colspan="3" ng-init="orderlineAdditionIndex = $index"  > 
+                    <p style="text-align: center">{{$index + 1}}</p> 
+                </td>
+                <td colspan="1" ng-repeat="itemAdditions2 in orderLine.item.itemHasAdditions" >
+                    <button ng-click="decreaseSuguerQuantity(OuterIndex, orderlineAdditionIndex, itemAdditions2)"  class="button">-</button>
+                    {{additionToOrder.quantity}} 
+                    <button ng-click="increaseSuguerQuantity(OuterIndex, orderlineAdditionIndex, itemAdditions2)" class="button">+</button>
+                </td>   
+            </tr>
 
         </tbody>
     </table>
@@ -66,7 +73,7 @@
     </table>
 </div>
 <div id="shesha" ng-if="showGame">
-    {{gameOrder}}
+    {{order.gameLines}}
     <table class="tab-content table table-bordered table-responsive table-striped">
         <thead style="background-color: lightgray;"  >
             <tr>
@@ -79,10 +86,10 @@
         </thead>
         <tbody>
 
-            <tr ng-repeat="gameLine in gameOrder.gameLines" style="background-color: #e4b9c0">
+            <tr ng-repeat="gameLine in order.gameLines" style="background-color: #e4b9c0">
                 <td>{{gameLine.game.gameName}}</td>
                 <td>{{gameLine.game.basePrice}}/{{gameLine.game.baseUnit}}</td>
-                <td><input type="number" ng-model="gameLine.date" min="0" step=".25"/></td>
+                <td><input type="number" ng-model="gameLine.period" min="0" step=".25"/></td>
                 <td>
                     <div class="dropdown form-group dropdown-start-parent">
                         <label>Start Date</label>
@@ -149,28 +156,29 @@
                         </tr>
                         <tr ng-repeat=" gameLine in Drink_sheSha_Order.gameLines"  >
                             <td >{{gameLine.game.gameName}}</td>
-                            <td >{{gameLine.date}} ساعه</td>
+                            <td >{{gameLine.period}} ساعه</td>
                         </tr>
                     </table>
                 </div>
             </div>
-<!--            <div class="modal-body">
-                <div class="row tab-content">
-                    <table class="tab-content table-bordered table-responsive table-striped col-md-12">
-                        <tr >
-                            <td>الاسم </td>
-                            <td>المده</td>
-                        </tr>
-                        <tr ng-repeat=" gameLine in Drink_sheSha_Order.gameLines"  >
-                            <td >{{gameLine.game.gameName}}</td>
-                            <td >{{gameLine.date}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>-->
+            <!--            <div class="modal-body">
+                            <div class="row tab-content">
+                                <table class="tab-content table-bordered table-responsive table-striped col-md-12">
+                                    <tr >
+                                        <td>الاسم </td>
+                                        <td>المده</td>
+                                    </tr>
+                                    <tr ng-repeat=" gameLine in Drink_sheSha_Order.gameLines"  >
+                                        <td >{{gameLine.game.gameName}}</td>
+                                        <td >{{gameLine.date}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>-->
             <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default hd-blue-btn" data-dismiss="modal">الغاء</button>-->
                 <button type="button" class="btn btn-default hd-blue-btn" data-dismiss="modal">الغاء</button>
-                <button type="button" class="btn btn-default hd-blue-btn" data-dismiss="modal">تاكيد </button>
+                <button  class="btn btn-default hd-blue-btn" ng-click="saveOrder()" >تاكيد </button>
 
             </div>
         </div>

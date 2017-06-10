@@ -6,17 +6,18 @@
                     <table class="table table-bordered table-striped table-hover ">
                         <tr>
                             <th class="text-center">table</th>
-                            <th class="text-center">state</th>
+                            <th class="text-center">status</th>
                         </tr>
                         <tr ng-repeat="table in tables| orderBy : 'tableName'">
                             <td class="text-center"><a ng-click="goToOrder(table)">{{table.tableName}}</a></td>
-                            <td class="text-center">{{table.state}}</td>
+                            <td class="text-center">{{table.empty}}</td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+    finished orders
     <div class="container"  >
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -24,11 +25,11 @@
                     <table class="table table-bordered table-striped table-hover ">
                         <tr>
                             <th class="text-center">table</th>
-                            <th class="text-center">state</th>
+                            <th class="text-center">serve</th>
                         </tr>
                         <tr ng-repeat="order in finishedOrders">
-                            <td class="text-center">{{order.orderId}}</td>
                             <td class="text-center">{{order.cafeTable.tableName}}</td>
+                            <td class="text-center"><button ng-click="serveOrder(order)">اتقدم</button></td>
                         </tr>
                     </table>
                 </div>
